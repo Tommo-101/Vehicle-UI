@@ -124,7 +124,6 @@ function AddDoorsMenu(vehicle, menu)
 	for k, v in pairs(cardoors) do
 		newIndex = k - 1
 		if DoesVehicleHaveDoor(vehicle, newIndex) then 
-			--print(newIndex.. ":"..k)
 			local doorItem = NativeUI.CreateItem("Toggle "..v,"Toggle for "..v)
 			doorMenu:AddItem(doorItem)
 		end
@@ -166,26 +165,10 @@ function AddWindowsMenu(vehicle, menu)
     end 
 end
 
---[[function ViewHealthMenu(vehicle, menu)
-	local healthMenu = _menuPool:AddSubMenu(menu, "Health", "View vehicle health", true, true, true)
-	
-	--GetVehicleBodyHealth(vehicle)
-	--GetVehicleEngineHealth(vehicle)
-	--GetVehicleEngineTemperature(vehicle)
-	--GetVehicleFuelLevel(vehicle)
-	--GetVehicleOilLevel(vehicle)
-	--GetVehiclePetrolTankHealth(vehicle)
-	--GetVehicleDirtLevel(vehicle)
-	
-end]]--
-
 function openDynamicMenu(vehicle)
 	_menuPool:Remove()
 	if vehMenu ~= nil and vehMenu:Visible() then
 		vehMenu:Visible(false)
-		if itemMenu then
-			vehMenu:Visible(false)
-		end
 		return
 	end
 	vehMenu = NativeUI.CreateMenu(Config.mTitle, 'Edit your vehicle', 5, 100,Config.mBG[1],Config.mBG[2]) 
@@ -195,7 +178,6 @@ function openDynamicMenu(vehicle)
 	AddDoorsMenu(vehicle, vehMenu)
 	AddWindowsMenu(vehicle, vehMenu)
 	AddLocksEngineMenu(vehicle, vehMenu)
-	--ViewHealthMenu(vehicle, vehMenu)
 	
 	_menuPool:RefreshIndex()
 	_menuPool:MouseControlsEnabled (false);
@@ -213,6 +195,7 @@ Citizen.CreateThread(function()
 		
 		if IsControlJustReleased(1, Config.menuKey) then
 			if IsPedInAnyVehicle(ped, false) and GetPedInVehicleSeat(vehicle, -1) == ped then
+				print("Open Menu!")
 				collectgarbage()
 				openDynamicMenu(vehicle)
 				vehMenu:Visible(not vehMenu:Visible())
@@ -222,10 +205,6 @@ Citizen.CreateThread(function()
 		if IsPedInAnyVehicle(ped, false) == false then
 			if vehMenu ~= nil and vehMenu:Visible() then
 				vehMenu:Visible(false)
-				if itemMenu then
-					vehMenu:Visible(false)
-				end
-				return
 			end
 		end
     end
